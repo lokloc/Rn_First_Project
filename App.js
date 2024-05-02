@@ -8,6 +8,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { API_KEY, API_URL } from '@env'; 
+import { Dropdown } from 'react-native-element-dropdown';
 
 // import type {Node} from 'react';
 import {
@@ -67,11 +68,38 @@ const Section = ({children, title})=> {
 
 const App = ()=> {
   const isDarkMode = useColorScheme() === 'dark';
-  const [userId,setUserId] = useState();
-  const [userJob, setUserJob] = useState();
+  const [userId,setUserId] = useState('');
+  const [userJob, setUserJob] = useState('');
   const [charName, onChangeCharName] = useState('');
+  const [skill_name, onChangeSkillName] = useState('');
+  const [skills_arr, setSkill_arr] = useState([])
+  // const data = [
+  //   { label: '60렙', value: 60},
+  //   { label: '30렙', value: 30},
+  // ]
+  // const [open, setOpen] = useState(true);
+  // const [value, setValue] = useState(null);
+  // const [items, setItems] = useState([
+  //   {label: 'Apple', value: 'apple'},
+  //   {label: 'Banana', value: 'banana'}
+  // ]);
+
+
+
+
+  // const [open, setOpen] = useState(false);
+  // const [value, setValue] = useState(null);
+  // const [items, setItems] = useState([
+  //   {label: 'Apple', value: 'apple'},
+  //   {label: 'Banana', value: 'banana'}
+  // ]);
+//30렙 찍을거랑 60렙찍을거만 구별
+//사용자가 입력했을때 스킬명,원하는 레벨 한번에 입력해서 객체화
+//textInput을 
+
   // const ocid_URL = API_URL+"id?character_name="+charName
   // let charInfo_URL = API_URL+"character/basic?ocid="+userId
+
 
 //섀바
 
@@ -105,12 +133,21 @@ const App = ()=> {
       .then(response => response.json())
       .then(data => setUserJob(data.character_class))
       .catch(error => console.error(error))
-      console.log(charName)
-      console.log(userId)
-      console.log(userJob)
+      
+  }
+  const addSkill = () =>{
+    let temp = [...skills_arr]
+    temp.push(skill_name)
+    setSkill_arr([...temp])
+    console.log(temp)
   }
   
+  const clearSkill = () =>{
+    let temp = []
+    setSkill_arr([...temp])
+  }
   
+
 
 
 
@@ -123,17 +160,11 @@ const App = ()=> {
           onChangeText = {onChangeCharName}
           value={charName}
           />
-          {/* <Button
-          style={styles.input}
-          onPress={checkJob}
-          title="직업확인(id불러오기 먼저)"
-          color= "gray"
-          /> */}
           <Button
           style={styles.input}
           onPress={getOCID}
           title="id 불러오기"
-          color= "gray"
+          color= "brown"
           />         
         </View>
         <Text>
@@ -142,6 +173,41 @@ const App = ()=> {
         <Text>
             {userJob}
         </Text>
+        <View style={{flexDirection:'row'}}>
+          <TextInput
+          style={styles.input}
+          onChangeText = {(text)=>onChangeSkillName(text)}
+          value={skill_name}
+          />
+
+            
+          <Button
+          style={styles.input}
+          onPress={addSkill}
+          title= "스킬추가"
+          color="brown"
+          >
+          </Button>
+          <Button
+          style={styles.input}
+          onPress={clearSkill}
+          title= "초기화"
+          color="brown"
+          >
+          </Button>
+
+
+        </View>
+         {/* <Dropdown
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+        /> */}
+        
+        {skills_arr.map((v) => <Text>{v}</Text>)} 
       </View>
    
 
